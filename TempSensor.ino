@@ -17,28 +17,27 @@ const int BLUE_LED = 6;
 void setup()
 {
 	Serial.begin(9600);
-
-  	
-  	// leds
-  	pinMode(RED_LED, OUTPUT);
-  	pinMode(GREEN_LED, OUTPUT);
-  	pinMode(BLUE_LED, OUTPUT);
+	
+	// leds
+	pinMode(RED_LED, OUTPUT);
+	pinMode(GREEN_LED, OUTPUT);
+	pinMode(BLUE_LED, OUTPUT);
 }
 
 int tempStatus(float t)
 {
-  if (t <= 0) {
-      return -1;
-    } else if (t >= 1 && t <= 99) {
-      return 0;
-    } else {
-      return 1;
-    }
+	if (t <= 0) {
+		return -1;
+	} else if (t >= 1 && t <= 99) {
+		return 0;
+	} else {
+		return 1;
+	}
 }
 
 void blink(int led)
 {
-  digitalWrite(led, HIGH);
+	digitalWrite(led, HIGH);
 }
 
 void turn_off(int led)
@@ -50,44 +49,44 @@ void serial_output(double v, double c, double f)
 {
 	Serial.println("-=-=-=-=-=-");
 	Serial.print("voltage: ");
-    Serial.println(v);
-    Serial.print("  deg C: ");
-    Serial.println(c);
-    Serial.print("  deg F: ");
-    Serial.println(f);
+	Serial.println(v);
+	Serial.print("  deg C: ");
+	Serial.println(c);
+	Serial.print("  deg F: ");
+	Serial.println(f);
 }
 
 void led_controller(c)
 {
-  	switch (tempStatus(c)) {
-      case -1: // freezing and below
-      	blink(BLUE_LED);
-        turn_off(RED_LED);
-        turn_off(GREEN_LED);
-        break;
-      case 1: // boiling and above
-      	blink(RED_LED);
-        turn_off(GREEN_LED);
-        turn_off(BLUE_LED);
-        break;
-      default: // normal
-        blink(GREEN_LED);
-        turn_off(RED_LED);
-        turn_off(BLUE_LED);
-      break;
-    }
+	switch (tempStatus(c)) {
+		case -1: // freezing and below
+			blink(BLUE_LED);
+			turn_off(RED_LED);
+			turn_off(GREEN_LED);
+			break;
+		case 1: // boiling and above
+			blink(RED_LED);
+			turn_off(GREEN_LED);
+			turn_off(BLUE_LED);
+			break;
+		default: // normal
+			blink(GREEN_LED);
+			turn_off(RED_LED);
+			turn_off(BLUE_LED);
+			break;
+	}
 }
 
 void loop()
 {
 	float voltage = getVoltage(), 
-  		  degreesC = getdegreesC(), 
-  		  degreesF = getdegreesF();
-  
-    serial_output(voltage, degreesC, degreesF);
-    led_controller(degreesC);
-  	
-  	delay(100);
+	      degreesC = getdegreesC(), 
+	      degreesF = getdegreesF();
+	
+	serial_output(voltage, degreesC, degreesF);
+	led_controller(degreesC);
+	
+	delay(100);
 }
 
 double getVoltage()
