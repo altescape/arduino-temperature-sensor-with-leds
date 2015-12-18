@@ -9,22 +9,20 @@
 // License: CC-BY-SA 3.0
 // Downloaded from: https://123d.circuits.io/circuits/1203766-temp-sensor-test
 
-#include <LiquidCrystal.h>
-
-const int temperaturePin = 0;
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+const int TEMP_PIN = 0;
+const int RED_LED = 2;
+const int GREEN_LED = 4;
+const int BLUE_LED = 6;
 
 void setup()
 {
-    // lcd
-  	lcd.begin(16,2);
-  	lcd.print("Temperature");
-  	Serial.begin(9600);
+	Serial.begin(9600);
 
+  	
   	// leds
-  	pinMode(6, OUTPUT);
-  	pinMode(7, OUTPUT);
-  	pinMode(8, OUTPUT);
+  	pinMode(RED_LED, OUTPUT);
+  	pinMode(GREEN_LED, OUTPUT);
+  	pinMode(BLUE_LED, OUTPUT);
 }
 
 int tempStatus(float t)
@@ -38,69 +36,71 @@ int tempStatus(float t)
     }
 }
 
-void blinkLed(int led)
+void blink(int led)
 {
   digitalWrite(led, HIGH);
-  delay(200);
-  digitalWrite(led, LOW);
-  delay(200);
-  digitalWrite(led, HIGH);
-  delay(200);
-  digitalWrite(led, LOW);
-  delay(200);
-  digitalWrite(led, HIGH);
-  delay(200);
-  digitalWrite(led, LOW);
-  delay(1000);
 }
 
-void loop()
+void turn_off(int led)
 {
-	float voltage, degreesC, degreesF;
+	digitalWrite(led, LOW);
+}
 
-  	voltage = getVoltage(temperaturePin);
-
-  	degreesC = (voltage - 0.5) * 100.0;
-
-  	degreesF = degreesC * (9.0/5.0) + 32.0;
-
-    Serial.println("-=-=-=-=-=-");
-  	Serial.print("voltage: ");
-    Serial.println(voltage);
+void serial_output(double v, double c, double f)
+{
+	Serial.println("-=-=-=-=-=-");
+	Serial.print("voltage: ");
+    Serial.println(v);
     Serial.print("  deg C: ");
-    Serial.println(degreesC);
+    Serial.println(c);
     Serial.print("  deg F: ");
-    Serial.println(degreesF);
+    Serial.println(f);
+}
 
-  	delay(500);
-
-  	//lcd.clear();
-  	lcd.setCursor(0, 1);
-  	lcd.print(degreesC);
-
-  	switch (tempStatus(degreesC)) {
-      case -1: // below freezing
-        digitalWrite(6, LOW);  // red led
-        digitalWrite(7, LOW);  // green led
-      	blinkLed(8);
-        //digitalWrite(8, HIGH); // blue led
+void led_controller(c)
+{
+  	switch (tempStatus(c)) {
+      case -1: // freezing and below
+      	blink(BLUE_LED);
+        turn_off(RED_LED);
+        turn_off(GREEN_LED);
         break;
-      case 1: // above boiling
-      	blinkLed(6);
-        //digitalWrite(6, HIGH); // red led
-        digitalWrite(7, LOW);  // green led
-        digitalWrite(8, LOW);  // blue led
+      case 1: // boiling and above
+      	blink(RED_LED);
+        turn_off(GREEN_LED);
+        turn_off(BLUE_LED);
         break;
       default: // normal
-        digitalWrite(6, LOW);  // red led
-      	blinkLed(7);
-        //digitalWrite(7, HIGH); // green led
-        digitalWrite(8, LOW);  // blue led
+        blink(GREEN_LED);
+        turn_off(RED_LED);
+        turn_off(BLUE_LED);
       break;
     }
 }
 
-float getVoltage(int pin)
+void loop()
 {
-	return (analogRead(pin) * 0.004882814);
+	float voltage = getVoltage(), 
+  		  degreesC = getdegreesC(), 
+  		  degreesF = getdegreesF();
+  
+    serial_output(voltage, degreesC, degreesF);
+    led_controller(degreesC);
+  	
+  	delay(100);
+}
+
+double getVoltage()
+{
+	return (analogRead(TEMP_PIN) * 0.004882814);
+}
+
+double getdegreesC()
+{
+	return (getVoltage() - 0.5) * 100.0;
+}
+
+double getdegreesF()
+{
+	return  getdegreesC() * (9.0/5.0) + 32.0;
 }
