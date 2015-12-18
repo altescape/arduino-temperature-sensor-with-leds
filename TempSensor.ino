@@ -7,7 +7,7 @@
 //
 // Made by Michael Watts
 // License: CC-BY-SA 3.0
-// Downloaded from: https://123d.circuits.io/circuits/1387881-temp-sensor-test/
+// Downloaded from: https://123d.circuits.io/circuits/1387881-temperature-sensor/
 
 const int TEMP_PIN = 0;
 const int RED_LED = 2;
