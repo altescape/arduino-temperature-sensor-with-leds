@@ -7,7 +7,7 @@
 //
 // Made by Michael Watts
 // License: CC-BY-SA 3.0
-// Downloaded from: https://123d.circuits.io/circuits/1387881-temp-sensor-test/
+// Downloaded from: https://123d.circuits.io/circuits/1387881-temperature-sensor/
 
 const int TEMP_PIN = 14;
 const int RED_LED_RIGHT = 2;
@@ -28,7 +28,7 @@ void setup()
 	pinMode(RED_LED_LEFT, OUTPUT);
   
   	// switch on all leds
-    test_leds();
+	test_leds();
 }
 
 int tempStatus(float t)
@@ -48,22 +48,22 @@ int tempStatus(float t)
 
 void test_leds()
 {
-  turn_on(RED_LED_LEFT);
-  delay(100);
-  turn_on(BLUE_LED);
-  delay(100);
-  turn_on(GREEN_LED);
-  delay(100);
-  turn_on(YELLOW_LED);
-  delay(100);
-  turn_on(RED_LED_RIGHT);
-  delay(100);
-  
-  turn_off(RED_LED_LEFT);
-  turn_off(BLUE_LED);
-  turn_off(GREEN_LED);
-  turn_off(YELLOW_LED);
-  turn_off(RED_LED_RIGHT);
+	turn_on(RED_LED_LEFT);
+	delay(100);
+	turn_on(BLUE_LED);
+	delay(100);
+	turn_on(GREEN_LED);
+	delay(100);
+	turn_on(YELLOW_LED);
+	delay(100);
+	turn_on(RED_LED_RIGHT);
+	delay(100);
+	
+	turn_off(RED_LED_LEFT);
+	turn_off(BLUE_LED);
+	turn_off(GREEN_LED);
+	turn_off(YELLOW_LED);
+	turn_off(RED_LED_RIGHT);
 }
 
 void blink(int led)
