@@ -56,7 +56,7 @@ void serial_output(double v, double c, double f)
 	Serial.println(f);
 }
 
-void led_controller(c)
+void led_controller(double c)
 {
 	switch (tempStatus(c)) {
 		case -1: // freezing and below
