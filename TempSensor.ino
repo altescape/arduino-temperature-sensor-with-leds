@@ -79,9 +79,10 @@ void led_controller(c)
 
 void loop()
 {
-	float voltage = getVoltage(), 
-	      degreesC = getdegreesC(), 
-	      degreesF = getdegreesF();
+	float
+		voltage = getVoltage(), 
+		degreesC = getdegreesC(), 
+		degreesF = getdegreesF();
 	
 	serial_output(voltage, degreesC, degreesF);
 	led_controller(degreesC);
